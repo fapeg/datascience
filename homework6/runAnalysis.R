@@ -1,6 +1,9 @@
 ## Test- und Trainingsdaten vereinen 
 ## nicht vergessen: working-directory auf Datensatz einstellen
+## und reshape2 installieren für melt und dcast
 ## mit hilfe von github: https://github.com/Themosp/Getting-and-Cleaning-Data-project/blob/master/run_analysis.R
+
+library(reshape2)
 
 activity_labels <- read.table("./activity_labels.txt",col.names=c("activity_id","activity_name"))
 feature_names <- read.table("features.txt")[,2]
@@ -31,5 +34,21 @@ test_data <- cbind(test_subject_id , test_activity_id , testdata)
 train_data <- cbind(train_subject_id , train_activity_id , traindata)
 all_data <- rbind(train_data,test_data)
 
-write.table(all_data, "./tidy_data.txt")
+## nur mean oder std spalten behalten, verkürzt auf drei zeilen
+ms_col_idx <- grep("mean|std",names(all_data),ignore.case=TRUE)
+ms_col_names <- names(all_data)[ms_col_idx]
+msdata <-all_data[,c("subject_id","activity_id",ms_col_names)]
+
+
+## die letzten vier zeilen habe ich übernommen, wusste nicht wie ich es anders lösen kann:
+
+
+
+descrnames <- merge(activity_labels,msdata,by.x="activity_id",by.y="activity_id",all=TRUE)
+
+data_melt <- melt(descrnames,id=c("activity_id","activity_name","subject_id"))
+
+mean_data <- dcast(data_melt,activity_id + activity_name + subject_id ~ variable,mean)
+
+write.table(mean_data, "./tidy_data.txt")
 
