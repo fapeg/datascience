@@ -1,5 +1,5 @@
 ## working directory setzen
-## mit hilfe von aufgaben bei rpubs
+## mit hilfe von aufgaben bei rpubs!!
 power_consumption <- read.csv2("household_power_consumption.txt")
 power_consumption$Date <- as.Date(power_consumption$Date,format="%d/%m/%Y")
 power_consumption_correct <- power_consumption[(power_consumption$Date>="2007-02-01") & (power_consumption$Date<"2007-02-03"),]
@@ -29,13 +29,13 @@ dev.off()
 
 ## diagramm 4
 # übernommen von webseite!
-plot4 <- function() {
+vier_diagramme <- function() {
   par(mfrow=c(2,2))
   
   ##PLOT 1
-  plot(power_consumption_correct$timestamp,power_consumption_correct$Global_active_power, type="l", xlab="", ylab="Global Active Power")
+  plot(power_consumption_correct$timestamp,as.numeric(as.character(power_consumption_correct$Global_active_power)), type="l", xlab="", ylab="Global Active Power")
   ##PLOT 2
-  plot(power_consumption_correct$timestamp,power_consumption_correct$Voltage, type="l", xlab="datetime", ylab="Voltage")
+  plot(power_consumption_correct$timestamp,as.numeric(as.character(power_consumption_correct$Voltage)), type="l", xlab="datetime", ylab="Voltage")
   
   ##PLOT 3
   plot(power_consumption_correct$timestamp,power_consumption_correct$Sub_metering_1, type="l", xlab="", ylab="Energy sub metering")
@@ -44,11 +44,10 @@ plot4 <- function() {
   legend("topright", col=c("black","red","blue"), c("Sub_metering_1  ","Sub_metering_2  ", "Sub_metering_3  "),lty=c(1,1), bty="n", cex=.5) #bty removes the box, cex shrinks the text, spacing added after labels so it renders correctly
   
   #PLOT 4
-  plot(power_consumption_correct$timestamp,power_consumption_correct$Global_reactive_power, type="l", xlab="datetime", ylab="Global_reactive_power")
+  plot(power_consumption_correct$timestamp,as.numeric(as.character(power_consumption_correct$Global_reactive_power)), type="l", xlab="datetime", ylab="Global_reactive_power")
   
   #OUTPUT
-  dev.copy(png, file="plot4.png", width=480, height=480)
+  dev.copy(png, file="vier_diagramme.png", width=480, height=480)
   dev.off()
-  cat("plot4.png has been saved in", getwd())
 }
-plot4()
+vier_diagramme()
